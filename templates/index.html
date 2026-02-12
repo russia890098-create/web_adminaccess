@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E Corp // Internal Gallery</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #c70000;
+            /* fsociety Red */
+            --text: #e0e0e0;
+            --bg: #0a0a0a;
+            --scanline: rgba(18, 16, 16, 0.5);
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'VT323', monospace;
+            margin: 0;
+            padding: 2rem;
+            height: 100vh;
+            overflow: hidden;
+            text-shadow: 0 0 5px var(--primary);
+        }
+
+        /* CRT Scanline Effect */
+        body::before {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 2;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            border: 2px solid var(--primary);
+            padding: 2rem;
+            position: relative;
+            background: rgba(0, 0, 0, 0.8);
+            box-shadow: 0 0 20px rgba(199, 0, 0, 0.2);
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin: 0 0 1rem 0;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+        }
+
+        .glitch {
+            position: relative;
+        }
+
+        /* Input Styling */
+        .input-group {
+            margin: 2rem 0;
+            display: flex;
+            gap: 10px;
+        }
+
+        input[type="text"] {
+            background: transparent;
+            border: 1px solid var(--text);
+            color: var(--primary);
+            font-family: 'VT323', monospace;
+            font-size: 1.5rem;
+            padding: 10px;
+            flex-grow: 1;
+            outline: none;
+        }
+
+        button {
+            background: var(--primary);
+            color: black;
+            border: none;
+            font-family: 'VT323', monospace;
+            font-size: 1.5rem;
+            padding: 10px 30px;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: #fff;
+            color: var(--primary);
+        }
+
+        /* Output Area */
+        .terminal-window {
+            background: #000;
+            border: 1px solid #333;
+            padding: 1rem;
+            min-height: 200px;
+            margin-top: 2rem;
+            overflow-y: auto;
+            font-size: 1.2rem;
+        }
+
+        .status-line {
+            color: #666;
+            border-bottom: 1px solid #333;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+        }
+
+        .error {
+            color: var(--primary);
+        }
+
+        .success {
+            color: #00ff00;
+        }
+
+        .logo {
+            font-size: 0.8rem;
+            opacity: 0.5;
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="glitch">E Corp Asset Gallery</h1>
+        <p>SECURE INTERNAL PREVIEWER // AUTHORIZED PERSONNEL ONLY</p>
+
+        <form method="POST">
+            <div class="input-group">
+                <input type="text" name="url" placeholder="ENTER RESOURCE URL..." required autocomplete="off">
+                <button type="submit">EXECUTE</button>
+            </div>
+        </form>
+
+        <div class="terminal-window">
+            <div class="status-line">SYSTEM STATUS: ONLINE // FIREWALL: ACTIVE</div>
+
+            {% if error %}
+            <div class="error">
+                > ERROR: {{ error }}<br>
+                > ACCESS_VIOLATION_DETECTED<br>
+                > INCIDENT_LOGGED
+            </div>
+            {% elif result %}
+            <div class="success">
+                > CONNECTION ESTABLISHED...<br>
+                > DATA RECEIVED:<br>
+                ------------------------------------------------<br>
+                {{ result | safe }}
+                <br>------------------------------------------------
+            </div>
+            {% else %}
+            <div style="color: #444;">
+                > WAITING FOR INPUT...<br>
+                > _
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="logo">PROP OF E CORP // ALLSAFE SECURITY</div>
+    </div>
+</body>
+
+</html>
