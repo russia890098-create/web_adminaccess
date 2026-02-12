@@ -21,16 +21,16 @@
             font-family: 'VT323', monospace;
             margin: 0;
             padding: 2rem;
-            min-height: 100vh; /* Changed from height to min-height */
-            overflow-y: auto;  /* Changed from hidden to auto to allow scrolling */
+            min-height: 100vh; /* Scroll fix */
+            overflow-y: auto;  /* Scroll fix */
             text-shadow: 0 0 5px var(--primary);
         }
 
-        /* CRT Scanline Effect - Fixed to cover full scrollable area */
+        /* CRT Scanline Effect */
         body::before {
             content: " ";
             display: block;
-            position: fixed; /* Fixed position ensures scanlines stay on screen while scrolling */
+            position: fixed;
             top: 0;
             left: 0;
             bottom: 0;
@@ -49,7 +49,7 @@
             position: relative;
             background: rgba(0,0,0,0.85);
             box-shadow: 0 0 20px rgba(199, 0, 0, 0.2);
-            margin-bottom: 50px; /* Add space at bottom for better scrolling */
+            margin-bottom: 50px;
         }
 
         h1 {
@@ -73,7 +73,7 @@
             margin: 2rem 0;
             display: flex;
             gap: 10px;
-            flex-wrap: wrap; /* Allows wrapping on mobile */
+            flex-wrap: wrap;
         }
 
         input[type="text"] {
@@ -122,7 +122,7 @@
             font-size: 1.2rem;
             white-space: pre-wrap;
             word-break: break-all;
-            overflow-x: auto; /* Allow horizontal scroll for long flags */
+            overflow-x: auto;
         }
 
         .status-line {
@@ -149,7 +149,6 @@
         // System Monitor v2.1 - E Corp Intranet
         console.log("%c[SYSTEM] Initializing E-Corp Watchdog...", "color: red; font-weight: bold; font-size: 14px;");
         
-        // FAKE ERROR SPAM TO MISLEAD PLAYERS
         setTimeout(() => {
             console.warn("[WARN] Connection to wss://127.0.0.1:8080/metrics failed. Retrying in 500ms...");
         }, 800);
@@ -161,6 +160,7 @@
         setTimeout(() => {
             console.error("[ERR] Socket handshake timeout. Service on port 8080 unresponsive. Please check Ticket #4920.");
         }, 3000);
+        //This doesn't look promising i guess the developer didnt logged proper errors
     </script>
 </head>
 
