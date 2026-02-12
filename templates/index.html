@@ -1,16 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>E Corp // Internal Gallery</title>
+    <title>E Corp // Internal Asset Manager</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #c70000;
-            /* fsociety Red */
+            --primary: #c70000; /* fsociety Red */
             --text: #e0e0e0;
             --bg: #0a0a0a;
             --scanline: rgba(18, 16, 16, 0.5);
@@ -48,7 +47,7 @@
             border: 2px solid var(--primary);
             padding: 2rem;
             position: relative;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0,0,0,0.85);
             box-shadow: 0 0 20px rgba(199, 0, 0, 0.2);
         }
 
@@ -57,10 +56,15 @@
             margin: 0 0 1rem 0;
             letter-spacing: 5px;
             text-transform: uppercase;
+            animation: glitch 1s infinite;
         }
 
-        .glitch {
-            position: relative;
+        @keyframes glitch {
+            0% { opacity: 1; transform: translate(0); }
+            2% { opacity: 1; transform: translate(-2px, 2px); }
+            4% { opacity: 1; transform: translate(2px, -2px); }
+            6% { opacity: 1; transform: translate(0); }
+            100% { opacity: 1; transform: translate(0); }
         }
 
         /* Input Styling */
@@ -80,6 +84,11 @@
             flex-grow: 1;
             outline: none;
         }
+        
+        input[type="text"]::placeholder {
+            color: #555;
+            opacity: 1;
+        }
 
         button {
             background: var(--primary);
@@ -91,11 +100,13 @@
             cursor: pointer;
             text-transform: uppercase;
             font-weight: bold;
+            transition: all 0.2s;
         }
 
         button:hover {
             background: #fff;
             color: var(--primary);
+            box-shadow: 0 0 15px var(--primary);
         }
 
         /* Output Area */
@@ -107,6 +118,8 @@
             margin-top: 2rem;
             overflow-y: auto;
             font-size: 1.2rem;
+            white-space: pre-wrap;
+            word-break: break-all;
         }
 
         .status-line {
@@ -114,65 +127,82 @@
             border-bottom: 1px solid #333;
             margin-bottom: 10px;
             padding-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
         }
 
-        .error {
-            color: var(--primary);
-        }
+        .error { color: var(--primary); }
+        .success { color: #00ff00; }
 
-        .success {
-            color: #00ff00;
-        }
-
-        .logo {
+        .footer {
+            margin-top: 20px;
             font-size: 0.8rem;
             opacity: 0.5;
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
+            text-align: right;
         }
     </style>
+    
+    <script>
+        // System Monitor v2.1 - E Corp Intranet
+        console.log("%c[SYSTEM] Initializing E-Corp Watchdog...", "color: red; font-weight: bold; font-size: 14px;");
+        
+        // FAKE ERROR SPAM TO MISLEAD PLAYERS
+        setTimeout(() => {
+            console.warn("[WARN] Connection to wss://127.0.0.1:8080/metrics failed. Retrying in 500ms...");
+        }, 800);
+        
+        setTimeout(() => {
+            console.warn("[WARN] Connection to wss://127.0.0.1:8080/metrics failed. Retrying in 1000ms...");
+        }, 1500);
+
+        setTimeout(() => {
+            console.error("[ERR] Socket handshake timeout. Service on port 8080 unresponsive. Please check Ticket #4920.");
+        }, 3000);
+    </script>
 </head>
 
 <body>
     <div class="container">
-        <h1 class="glitch">E Corp Asset Gallery</h1>
-        <p>SECURE INTERNAL PREVIEWER // AUTHORIZED PERSONNEL ONLY</p>
+        <h1>E Corp Asset Gallery</h1>
+        <p>SECURE INTERNAL PREVIEWER // VER 2.4.1 // AUTH: TOKEN_PASSTHROUGH</p>
 
         <form method="POST">
             <div class="input-group">
-                <input type="text" name="url" placeholder="ENTER RESOURCE URL..." required autocomplete="off">
-                <button type="submit">EXECUTE</button>
+                <input type="text" name="url" placeholder="http://internal-assets.ecorp.com/logo.png" required autocomplete="off">
+                <button type="submit">FETCH</button>
             </div>
         </form>
 
         <div class="terminal-window">
-            <div class="status-line">SYSTEM STATUS: ONLINE // FIREWALL: ACTIVE</div>
+            <div class="status-line">
+                <span>STATUS: CONNECTED</span>
+                <span>ENCRYPTION: OFF</span>
+            </div>
 
             {% if error %}
-            <div class="error">
-                > ERROR: {{ error }}<br>
-                > ACCESS_VIOLATION_DETECTED<br>
-                > INCIDENT_LOGGED
-            </div>
+                <div class="error">
+                    > SYSTEM_ALERT: {{ error }}<br>
+                    > TRAFFIC_ANALYSIS: FLAGGED<br>
+                    > INCIDENT_LOGGED_TO_SIEM
+                </div>
             {% elif result %}
-            <div class="success">
-                > CONNECTION ESTABLISHED...<br>
-                > DATA RECEIVED:<br>
-                ------------------------------------------------<br>
-                {{ result | safe }}
-                <br>------------------------------------------------
-            </div>
+                <div class="success">
+                    > CONNECTION ESTABLISHED...<br>
+                    > HANDSHAKE: OK<br>
+                    > DATA RECEIVED:<br>
+                    ------------------------------------------------<br>
+                    {{ result | safe }}
+                    <br>------------------------------------------------
+                </div>
             {% else %}
-            <div style="color: #444;">
-                > WAITING FOR INPUT...<br>
-                > _
-            </div>
+                <div style="color: #444;">
+                    > WAITING FOR TARGET...<br>
+                    > _
+                </div>
             {% endif %}
         </div>
 
-        <div class="logo">PROP OF E CORP // ALLSAFE SECURITY</div>
+        <div class="footer">PROP OF E CORP // ALLSAFE SECURITY AUDIT PENDING</div>
     </div>
 </body>
-
 </html>
